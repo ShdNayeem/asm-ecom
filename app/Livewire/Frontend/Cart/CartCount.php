@@ -18,8 +18,10 @@ class CartCount extends Component
             return $this->CartCount = Cart::where('user_id', auth()->user()->id)->count();
         }
         else{
-            return $this->CartCount = 0;
+            $cart = session()->get('cart', []);
+            $this->CartCount = count($cart);
         }
+        return $this->CartCount;
     }
 
     public function render()

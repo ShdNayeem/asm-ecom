@@ -32,9 +32,9 @@ class Product extends Model
     }
 
 // If you want only one image (like the first one or a thumbnail):
-    public function firstImage()
-    {
-        return $this->hasOne(ProductImage::class)->latestOfMany();
-    }
+    // public function firstImage()
+    // {
+    //     return $this->hasOne(ProductImage::class)->latestOfMany();
+    // }
 
 }

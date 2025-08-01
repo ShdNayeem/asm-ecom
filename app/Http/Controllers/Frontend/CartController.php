@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -13,4 +14,5 @@ class CartController extends Controller
         
         return view('frontend.cart.index');
     }
-}
+
+    }

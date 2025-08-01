@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+@section('title', 'Create Product')
 @section('content')
     
 <div class="row">
@@ -13,8 +14,8 @@
 
         <div class="card">
             <div class="card-header d-flex justify-content-between p-3">
-                <h2> Add Products</h2>
-                <a href="{{url('admin/products')}}" class="btn btn-primary"> Back </a>
+                <h2 class="fw-semibold text-secondary"> Add Products</h2>
+                <a href="{{url('admin/products')}}" class="btn btn-danger"> Back </a>
             </div>
 
             <div class="card-body">
@@ -62,7 +63,7 @@
 
                                 <div class="col-md-6 mb-3">
                                     <label for="">Thumbnail <span class="text-danger">*</span></label>
-                                    <input name="image" type="file" class="form-control mt-2" value="{{old('image')}}">
+                                    <input name="image[]" multiple type="file" class="form-control mt-2" value="{{old('image')}}">
                                     @error('image')
                                         <small class="text-danger">{{$message}}</small>
                                     @enderror
@@ -137,7 +138,7 @@
                                 </div>
                             
                                 <div class="col-md-12 mb-3">
-                                    <button type="submit" class="btn btn-primary float-end"> Save</button>
+                                    <button type="submit" class="btn btn-info float-end"> Save</button>
                                 </div>
                             </div>
                     </form>                

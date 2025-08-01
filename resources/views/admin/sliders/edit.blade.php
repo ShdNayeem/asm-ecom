@@ -1,4 +1,5 @@
-@extends('admin.dashboard')
+@extends('layouts.admin')
+@section('title', 'Edit Slider')
 @section('content')
     <div class="row">
             <div class="col-md-12 grid-margin">
@@ -10,8 +11,8 @@
                 </div>
                 <div class="card">
                     <div class="card-header d-flex justify-content-between p-3">
-                        <a href="/admin/sliders/create" class="text-decoration-none text-dark"> <h2>Edit Slider</h2> </a>
-                        <a href="{{url('admin/sliders')}}" class="btn btn-primary"> Back</a>
+                        <h2 class="fw-semibold text-secondary">Edit Slider</h2>
+                        <a href="{{url('admin/sliders')}}" class="btn btn-danger"> Back</a>
                     </div>
                     <div class="card-body">
                         <form action="{{url('admin/sliders/'.$slider->id)}}" method="post" enctype="multipart/form-data">
@@ -44,7 +45,7 @@
                                 </div>
                             
                                 <div class="col-md-12 mb-3">
-                                    <button type="submit" class="btn btn-primary float-end"> Edit</button>
+                                    <button type="submit" class="btn btn-info float-end"> Edit</button>
                                 </div>
                             </div>
                         </form>

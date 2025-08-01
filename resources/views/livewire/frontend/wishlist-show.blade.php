@@ -1,13 +1,15 @@
 <div>
     <div class="py-3 py-md-5 bg-light">
+        
         <div class="container">
     
             <div class="row">
                 <div class="col-md-12">
-                    
+                    <h4 class="fw-bold text-primary">Your Wishlist</h4>
+                    <hr>
                     <div class="shopping-cart">
                         <div class="cart-header d-none d-sm-none d-mb-block d-lg-block">
-
+                            
                             <div class="row">
                                 <div class="col-md-6">
                                     <h4>Products</h4>
@@ -30,7 +32,7 @@
 
                                     <a href="{{ url ('collections/'.$wishlistItem->product->category->slug.'/'.$wishlistItem->product->slug )}}">
                                         <label class="product-name">
-                                            <img src="{{asset($wishlistItem->product->firstImage->image)}}" style="width: 50px; height: 50px" alt="{{$wishlistItem->product->name}}">
+                                            <img src="{{asset($wishlistItem->product->productImages->first()->image)}}" style="width: 50px; height: 50px" alt="{{$wishlistItem->product->name}}">
                                             {{$wishlistItem->product->name}}
                                         </label>
                                     </a>
@@ -64,10 +66,21 @@
                             </div>
                         </div>
                         @empty
-                            <h4>No Wishlist Added!</h4>
+                            
+                            <!-- <p class="text-center mt-5">No Wishlist Added!</p>
+                            <div class="d-flex justify-content-center">
+                                <a href="{{ url('/category') }}" class="btn btn-warning mt-2 w-25">Shop Now</a>
+                            </div> -->
+
+                            <div class="card card-body text-center p-md-5 mt-3 shadow">
+                                <h5>No Wishlist Added!</h5>
+                                <div class="d-flex justify-content-center">
+                                    <a href="{{url ('/collections') }}" class="btn btn-warning w-25 mt-3">Shop now</a>
+                                </div>
+                            </div>
+                            
                         @endforelse
                         
-                              
                     </div>
                 </div>
             </div>

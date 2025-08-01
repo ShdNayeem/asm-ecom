@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -22,6 +24,30 @@ class RegisterController extends Controller
     */
 
     use RegistersUsers;
+
+    protected function registered(Request $request, $user)
+    {
+        $sessionCart = session()->get('cart', []);
+
+        foreach ($sessionCart as $productId => $details) {
+            $existing = Cart::where('user_id', $user->id)->where('product_id', $productId)->first();
+
+            if ($existing) {
+                $existing->quantity += $details['quantity'];
+                $existing->save();
+            } else {
+                Cart::create([
+                    'user_id' => $user->id,
+                    'product_id' => $productId,
+                    'quantity' => $details['quantity']
+                ]);
+            }
+        }
+        // session()->forget('cart');
+        if (!empty($sessionCart)) {
+                return redirect('/cart');
+            }
+    }
 
     /**
      * Where to redirect users after registration.

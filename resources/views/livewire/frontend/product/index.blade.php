@@ -4,10 +4,13 @@
                 <div class="col-md-3">
                     <div class="product-card">
                         <div class="product-card-img">
-                            <a href="{{url('/collections/'.$product->category->slug.'/'.$product->slug)}}">
-                                <img src="{{ asset($product->firstImage->image) }}" alt="{{ $product->name }}">
+                            @if ($product->productImages->count() > 0)
+                                <a href="{{url('/collections/'.$product->category->slug.'/'.$product->slug)}}">
+                                <img src="{{ asset($product->productImages[0]->image) }}" alt="{{ $product->name }}">
                             </a>
-                            
+                            @else
+                            <img src="" alt="{{ $product->name }}">
+                            @endif
                         </div>
                         <div class="product-card-body">
                              <div class="mb-2">

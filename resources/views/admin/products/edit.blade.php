@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+@section('title', 'Edit Product')
 @section('content')
     
 <div class="row">
@@ -11,10 +12,14 @@
             </ul>
         </div>
 
+        @if (session('message'))
+            <div class="alert alert-success"> {{session('message')}}</div>
+        @endif
+
         <div class="card">
             <div class="card-header d-flex justify-content-between p-3">
-                <h2> Add Products</h2>
-                <a href="{{url('admin/products')}}" class="btn btn-primary"> Back </a>
+                <h2 class="fw-semibold text-secondary"> Add Products</h2>
+                <a href="{{url('admin/products')}}" class="btn btn-danger"> Back </a>
             </div>
 
             <div class="card-body">
@@ -64,14 +69,19 @@
 
                                 <div class="col-md-6 mb-3">
                                     <label for="">Thumbnail</label>
-                                    <input name="image" type="file" class="form-control mt-2" value="{{old('image')}}">
+                                    <input name="image[]" multiple type="file" class="form-control mt-2" value="{{old('image')}}">
                                     @error('image')
                                         <small class="text-danger">{{$message}}</small>
                                     @enderror
 
-                                    @if ($product->firstImage)
-                                        <div class="mt-2">
-                                            <img src="{{ asset($product->firstImage->image) }}" class="p-1 border border-2" alt="Thumbnail" width="100" height="100">
+                                    @if ($product->productImages)
+                                        <div class="mt-2 d-flex flex-wrap gap-2">
+                                            @foreach ($product->productImages as $image)
+                                                <div>
+                                                    <img src="{{ asset($image->image) }}" class="p-1 border border-2 mb-2" alt="Product Image" width="100" height="100"><br>
+                                                    <a href="{{ url('admin/product-image/'.$image->id.'/delete') }}" class="d-block">Remove</a>
+                                                </div>
+                                            @endforeach
                                         </div>
                                     @else
                                         <h5 class="mt-2 text-danger">No Image</h5>
@@ -80,7 +90,7 @@
 
                                 <div class="col-md-6 mb-3">
                                     <label for="">Price</label>
-                                    <input name="price" type="" class="form-control mt-2" placeholder="Enter Price" value="{{$product->price, old('price')}}">
+                                    <input name="price" type="" class="form-control mt-2" placeholder="Enter Price" value="{{ old('price', number_format($product->price, 2, '.', '')) }}">
                                     @error('price')
                                         <small class="text-danger">{{$message}}</small>
                                     @enderror
@@ -88,7 +98,7 @@
 
                                 <div class="col-md-6 mb-3">
                                     <label for=""> Offer Price</label>
-                                    <input name="offer_price" type="" class="form-control mt-2" placeholder="Enter Offer Price" value="{{$product->offer_price, old('offer_price')}}">
+                                    <input name="offer_price" type="" class="form-control mt-2" placeholder="Enter Offer Price" value="{{ old('offer_price', number_format($product->offer_price, 2, '.', '')) }}">
                                     @error('offer_price')
                                         <small class="text-danger">{{$message}}</small>
                                     @enderror
@@ -148,7 +158,7 @@
                                 </div>
                             
                                 <div class="col-md-12 mb-3">
-                                    <button type="submit" class="btn btn-primary float-end"> Update</button>
+                                    <button type="submit" class="btn btn-info float-end"> Update</button>
                                 </div>
                             </div>
                     </form>                

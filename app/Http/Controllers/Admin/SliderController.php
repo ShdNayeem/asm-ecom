@@ -69,15 +69,15 @@ class SliderController extends Controller
     }
 
     public function destroy(Slider $slider)
-    {
-        if($slider->count > 0 ){
-            $destination = $slider->image;
-            if(File::exists($destination)){
-                File::delete($destination);
-            }
-        }
-        $slider->delete();
-        return redirect('admin/sliders')->with('message', 'Slider Deleted Succesfully!');
+{
+    $destination = $slider->image;
+    if (File::exists($destination)) {
+        File::delete($destination);
     }
+
+    $slider->delete();
+
+    return redirect('admin/sliders')->with('message', 'Slider Deleted Successfully!');
+}
 
 }

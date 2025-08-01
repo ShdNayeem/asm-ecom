@@ -70,12 +70,12 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-2 my-auto d-none d-sm-none d-md-block d-lg-block">
-                        <a href="{{url('/')}}"><h5 class="brand-name">ASM Ecom</h5></a>
+                        <a href="{{url('/')}}"> <h4 class="brand-name">{{ $appSetting->website_name ?? ''  }} </h4> </a>   
                     </div>
                     <div class="col-md-5 my-auto">
-                        <form role="search">
+                        <form action="{{url ('/search') }}" method="get" role="search" id="search-form">
                             <div class="input-group">
-                                <input type="search" placeholder="Search your product" class="form-control" />
+                                <input type="search" name="search" id="search_texts" value="{{Request::get('search')}}" placeholder="Search your product" class="form-control" />
                                 <button class="btn bg-white" type="submit">
                                     <i class="fa fa-search"></i>
                                 </button>
@@ -85,11 +85,13 @@
                     <div class="col-md-5 my-auto">
                         <ul class="nav justify-content-end">
                             
-
                             <li class="nav-item">
-                                <a class="nav-link" href="{{url('cart')}}">
-                                    <i class="fa fa-shopping-cart"></i> Cart (<livewire:frontend.cart.cart-count/>)
-                                </a>
+                                <button type="button" data-bs-toggle="offcanvas" data-bs-target="#cart" class="nav-link">
+                                    <i class="fa fa-shopping-cart"></i> 
+                                  
+                                        Cart (<livewire:frontend.cart.cart-count />)
+                                    
+                                </button>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{url('wishlist')}}">
@@ -115,17 +117,17 @@
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fa fa-user"></i> {{ Auth::user()->name }} 
                                 </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profile</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fa fa-list"></i> My Orders</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fa fa-heart"></i> My Wishlist</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fa fa-shopping-cart"></i> My Cart</a></li>
+                                <ul class="dropdown-menu  dropdown-menu-start" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{{url ('/profile') }}"><i class="fa fa-user me-2"></i> Profile</a></li>
+                                <li><a class="dropdown-item" href="{{url ('/orders') }}"><i class="fa fa-list me-1"></i> My Orders</a></li>
+                                <li><a class="dropdown-item" href="{{url ('/wishlist') }}"><i class="fa fa-heart me-1"></i> My Wishlist</a></li>
+                                <li><a class="dropdown-item" href="{{url ('/cart') }}"><i class="fa fa-shopping-cart me-1"></i> My Cart</a></li>
 
                                 <li>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        <i class="fa fa-sign-out"></i>{{ __('Logout') }}
+                                        <i class="fa fa-sign-out me-2"></i>{{ __('Logout') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -149,38 +151,59 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="margin-left: 250px;">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0"  style="margin-right: 500px;">
                         <li class="nav-item">
 
-                            <a class="nav-link" href="{{url ('/')}}">Home</a>
+                            <a class="nav-link fw-semibold" href="{{url ('/')}}">Home</a>
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="{{url ('/collections')}}">All Categories</a>
+                        </li> -->
+                                                
+                        
+                        <li class="nav-item dropdown">
+                            <a class="nav-link fw-semibold dropdown-toggle" href="{{url ('/collections')}}">
+                                All Categories
+                            </a>
+                            <ul class="dropdown-menu">
+                                @foreach($allCategories as $category)
+                                    <li>
+                                        <a class="dropdown-item" href="{{ url('/collections/'. $category->slug) }}">
+                                            {{ $category->name }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">New Arrivals</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Featured Products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Electronics</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Fashions</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Accessories</a>
+                
 
-                        </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Home</a>
+                            <a class="nav-link fw-semibold" href="{{url ('/newArrivals') }}">New Arrivals</a>
                         </li>
+                        
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Appliances</a>
+                            <a class="nav-link fw-semibold" href="{{url ('/about') }}">About</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold" href="{{url ('/contact') }}">Contact</a>
+                        </li>
+                        
                     </ul>
                 </div>
             </div>
         </nav>
     </div>
+
+        <div class="offcanvas offcanvas-end" id="cart">
+
+        <div class="offcanvas-body">
+            <livewire:frontend.sidebar-cart.sidebar-cart-show />
+        </div>
+                    
+
+        </div>
+
+
+    </div>
+</div>

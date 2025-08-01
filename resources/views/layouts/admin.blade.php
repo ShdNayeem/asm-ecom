@@ -21,6 +21,17 @@
   <!-- endinject -->
   <link rel="shortcut icon" href="{{ asset('admin/images/favicon.ico') }}" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+<!-- datatable for search and pagination in adminpannel -->
+<link rel="stylesheet" href="asset('build/assets/css/dataTables.min.css')">
+
+<link rel="stylesheet" href="asset('build/assets/css/dataTables.bootstrap5.min.css')">
+
+<style>
+    .sidebar .nav .nav-item.active{
+        background-color: #e9e9e9;
+    }
+</style>
      @livewireStyles
 </head>
 <body>
@@ -53,6 +64,11 @@
   <!-- Custom js for this page-->
   <script src="{{ asset ('admin/js/dashboard.js') }}"></script>
   <script src="{{ asset ('admin/js/proBanner.js') }}"></script>
+
+  <!-- datatable for search and pagination in adminpannel -->
+   <script src="{{asset('build/assets/js/dataTables.min.js')}}"></script>
+
+   <script src="{{asset('build/assets/js/dataTables.bootstrap5.min.js')}}"></script>
  @livewireScripts
 
  @stack('script')

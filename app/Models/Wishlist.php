@@ -19,7 +19,7 @@ class Wishlist extends Model
     return $this->belongsTo(Product::class, 'product_id', 'id');
 }
 
-public function firstImage(): BelongsTo
+public function productImages(): BelongsTo
 {
     return $this->belongsTo(Product::class, 'product_id', 'id');
 }

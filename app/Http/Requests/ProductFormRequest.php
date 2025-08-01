@@ -33,7 +33,7 @@ class ProductFormRequest extends FormRequest
             ],
             'slug' => [
                 'required',
-                'string',
+                
                 'max:50'
             ],
             'description' => [
@@ -42,15 +42,15 @@ class ProductFormRequest extends FormRequest
             ],
             'image' => [
                 'nullable',
-                'mimes:png,jpg,jpeg,webp'
+                
             ],
             'price' => [
                 'required',
-                'string'
+                'numeric'
             ],
             'offer_price' => [
                 'required',
-                'string'
+                'numeric'
             ],
             'msme_no' => [
                 'required',

@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Category;
 use App\Models\Offer;
+use App\Models\Setting;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,6 +26,14 @@ class AppServiceProvider extends ServiceProvider
     View::composer('*', function ($view) {
         $offers = Offer::orderBy('created_at', 'desc')->take(5)->get();
         $view->with('ecomoffers', $offers);
+    });
+
+    $websiteSetting = Setting::first();
+    View::share('appSetting', $websiteSetting);
+
+    View::composer('*', function ($view) {
+        $categories = Category::all();
+        $view->with('allCategories', $categories);
     });
 }
 }

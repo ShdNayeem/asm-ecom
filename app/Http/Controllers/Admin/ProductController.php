@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\File;
 class ProductController extends Controller
 {
     public function index(){
-        $products = Product::all();
+        $products = Product::orderBy('id', 'desc')->get();
         return view('admin.products.index', compact('products'));
     }
 
@@ -48,17 +48,19 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
             $uploadPath = 'uploads/products/';
             
-            $imageFile = $request->file('image');
-            $extension = $imageFile->getClientOriginalExtension();
-            $filename = time() . '-' . uniqid() . '.' . $extension;
-            $imageFile->move(public_path($uploadPath), $filename);
+            $i = 1;
+            foreach($request->file('image') as $imageFile){
+                $extension = $imageFile->getClientOriginalExtension();
+                $filename = time().$i++.'.'.$extension;
+                $imageFile->move($uploadPath, $filename);
+                $finalImagePathName = $uploadPath.$filename;
 
-            $finalImagePathName = $uploadPath . $filename;
-
-            $product->productImages()->create([
+                $product->productImages()->create([
                 'product_id' => $product->id,
                 'image' => $finalImagePathName,
             ]);
+            }
+            
         }
 
         return redirect('/admin/products')->with('message', 'Product Added Successfully!');
@@ -71,7 +73,7 @@ class ProductController extends Controller
         return view('admin.products.edit', compact('categories', 'product'));
     }
 
-    public function update(ProductFormRequest $request, int $product_id, int $product_image_id){
+    public function update(ProductFormRequest $request, int $product_id){
         $validatedData = $request->validated();
 
         $product = Category::findOrFail($validatedData['category_id'])
@@ -96,17 +98,19 @@ class ProductController extends Controller
             if ($request->hasFile('image')) {
             $uploadPath = 'uploads/products/';
             
-            $imageFile = $request->file('image');
-            $extension = $imageFile->getClientOriginalExtension();
-            $filename = time() . '-' . uniqid() . '.' . $extension;
-            $imageFile->move(public_path($uploadPath), $filename);
+            $i = 1;
+            foreach($request->file('image') as $imageFile){
+                $extension = $imageFile->getClientOriginalExtension();
+                $filename = time().$i++.'.'.$extension;
+                $imageFile->move($uploadPath, $filename);
+                $finalImagePathName = $uploadPath.$filename;
 
-            $finalImagePathName = $uploadPath . $filename;
-
-            $product->productImages()->create([
+                $product->productImages()->create([
                 'product_id' => $product->id,
                 'image' => $finalImagePathName,
             ]);
+            }
+            
         }
         return redirect('/admin/products')->with('message', 'Product Updated Successfully!');
         
@@ -116,28 +120,45 @@ class ProductController extends Controller
         }
     }
 
+    public function destroyImage(int $product_image_id){
+        $productImage = ProductImage::findOrFail($product_image_id);
+        if(File::exists($productImage->image)){
+            File::delete($productImage->image);
+        }
+        $productImage->delete();
+        return redirect()->back()->with('message', 'Product Image Deleted Successfully!');
+    }
+
     public function destroy(int $product_id){
 
         $product = Product::findOrFail($product_id);
 
-    // Check if the product has images
-    if ($product->firstImage) {
-        $imagePath = public_path('uploads/products/' . $product->firstImage->image);
-
-        // Delete the image file from folder if it exists
-        if (File::exists($imagePath)) {
-            File::delete($imagePath);
+        if($product->productImages){
+            foreach($product->productImages as $image){
+                if(File::exists($image->image)){
+                    File::delete($image->image);
+                }
+            }
         }
-
-        // Optionally, delete the image record from DB
-        $product->firstImage->delete();
+        $product->delete();
+        return redirect('/admin/products')->with('message', 'Product Deleted with its all Images');
     }
+
+    // Check if the product has images
+    // if ($product->firstImage) {
+    //     $imagePath = public_path('uploads/products/' . $product->firstImage->image);
+
+    //     Delete the image file from folder if it exists
+    //     if (File::exists($imagePath)) {
+    //         File::delete($imagePath);
+    //     }
+
+    //     Optionally, delete the image record from DB
+    //     $product->firstImage->delete();
+    // }
 
     // Now delete the product
-    $product->delete();
+    // $product->delete();
 
-    return redirect('/admin/products')->with('message', 'Product Deleted Successfully!');
-    }
-    
-
+    // return redirect('/admin/products')->with('message', 'Product Deleted Successfully!');
 }

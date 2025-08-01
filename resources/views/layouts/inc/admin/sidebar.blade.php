@@ -1,11 +1,20 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
   <ul class="nav">
-    <li class="nav-item">
+    <li class="nav-item {{ Request::is('admin/dashboard') ? 'active' : '' }}">
       <a class="nav-link" href="{{url('admin/dashboard')}}">
-        <i class="mdi mdi-home menu-icon"></i>
+        <i class="mdi mdi-speedometer menu-icon"></i>
         <span class="menu-title">Dashboard</span>
       </a>
-    </li>    
+    </li>
+    
+    <li class="nav-item {{ Request::is('admin/orders') ? 'active':'' }}">
+      <a class="nav-link" href="{{url('admin/orders')}}" aria-expanded="false" aria-controls="tables">
+        <i class="bi bi-chat-square-text menu-icon"></i>
+        <span class="menu-title">Orders</span>
+        <!-- <i class="menu-arrow"></i> -->
+      </a>
+      </li>
+
     <!-- <li class="nav-item">
       <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
         <i class="mdi mdi-circle-outline menu-icon"></i>
@@ -39,22 +48,23 @@
       </div> -->
     </li>    
     <li class="nav-item">
-      <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
+      <a class="nav-link" data-bs-toggle="collapse" href="#category" aria-expanded="false" aria-controls="category">
         <i class="bi bi-tags menu-icon"></i>
         <span class="menu-title">Category</span>
         <i class="menu-arrow"></i>
       </a>
-      <div class="collapse" id="charts">
+      <div class="collapse" id="category">
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"> <a class="nav-link" href="{{url('admin/category')}}">View Category</a></li>
         </ul>
       </div>
-      <div class="collapse" id="charts">
+      <div class="collapse" id="category">
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"> <a class="nav-link" href="{{url('admin/category/create')}}">Add Category</a></li>
         </ul>
       </div>
     </li>
+
     <li class="nav-item">
       <a class="nav-link" data-bs-toggle="collapse" href="#products" aria-expanded="false" aria-controls="products">
         <i class="bi bi-cart2 menu-icon"></i>
@@ -72,10 +82,29 @@
         </ul>
       </div>
     </li>
+
+    <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="collapse" href="#discounts" aria-expanded="false" aria-controls="discounts">
+        <i class="mdi mdi-sale menu-icon"></i>
+        <span class="menu-title">Discounts</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="discounts">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{{url('admin/discounts')}}">View Discounts</a></li>
+        </ul>
+      </div>
+      <div class="collapse" id="discounts">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{{url('admin/discounts/create')}}">Add Discounts</a></li>
+        </ul>
+      </div>
+    </li>
+
     <li class="nav-item">
       <a class="nav-link" data-bs-toggle="collapse" href="#offers" aria-expanded="false" aria-controls="offers">
-        <i class="bi bi-chat-square-text menu-icon"></i>
-        <span class="menu-title">Offers</span>
+        <i class="bi bi-bookmark-star menu-icon"></i>
+        <span class="menu-title">Offer Texts</span>
         <i class="menu-arrow"></i>
       </a>
       <div class="collapse" id="offers">
@@ -89,20 +118,67 @@
         </ul>
       </div>
       </li>
+
       <li class="nav-item">
-      <a class="nav-link" href="{{url('admin/sliders')}}" aria-expanded="false" aria-controls="tables">
+      <a class="nav-link" data-bs-toggle="collapse" href="#sliders" aria-expanded="false" aria-controls="sliders">
         <i class="mdi mdi-view-carousel-outline menu-icon"></i>
         <span class="menu-title">Sliders</span>
-        <!-- <i class="menu-arrow"></i> -->
+        <i class="menu-arrow"></i>
       </a>
+      <div class="collapse" id="sliders">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{{url('admin/sliders')}}">View Slider</a></li>
+        </ul>
+      </div>
+      <div class="collapse" id="sliders">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{{url('admin/sliders/create')}}">Add Slider</a></li>
+        </ul>
+      </div>
       </li>
-    <li class="nav-item">
+
+      <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="collapse" href="#users" aria-expanded="false" aria-controls="users">
+        <i class="mdi mdi-account-multiple menu-icon"></i>
+        <span class="menu-title">Users</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="users">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{{url('admin/users')}}">View Users</a></li>
+        </ul>
+      </div>
+      <div class="collapse" id="users">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{{url('admin/users/create')}}">Add User</a></li>
+        </ul>
+      </div>
+      </li>
+
+      <li class="nav-item">
+      <a class="nav-link" href="#settings"  data-bs-toggle="collapse"  aria-expanded="false" aria-controls="settings">
+        <i class="bi bi-gear menu-icon"></i>
+        <span class="menu-title">Company Profile</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="settings">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{{url('admin/settings')}}">View Profile</a></li>
+        </ul>
+      </div>
+      <div class="collapse" id="settings">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{{url('admin/settings/edit')}}">Edit Profile</a></li>
+        </ul>
+      </div>
+      </li>
+
+    <!-- <li class="nav-item">
       <a class="nav-link" href="{{url('admin/brands')}}" aria-expanded="false" aria-controls="tables">
         <i class="bi bi-award menu-icon"></i>
         <span class="menu-title">Brands</span>
-        <!-- <i class="menu-arrow"></i> -->
       </a>
-      </li>    
+    </li>     -->
     
       <!-- <div class="collapse" id="tables">
         <ul class="nav flex-column sub-menu">

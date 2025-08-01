@@ -7,28 +7,29 @@
                 @endif
                 <div class="card">
                     <div class="card-header d-flex justify-content-between p-3">
-                        <a href="{{url('admin/category')}}" class="text-decoration-none text-dark"><h2>Category</h2></a>
-                        <a href="{{url('admin/category/create')}}" class="btn btn-primary"> Add Category</a>
+                        <h2 class="fw-semibold text-secondary">Category</h2>
+                        <a href="{{url('admin/category/create')}}" class="btn" style="background-color: green; color:white;"> Add Category</a>
                     </div>
                     <div class="card-body">
-                        <table class="table table-bordered">
-                            <div class="thead">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="myTable">
+                            <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Slug</th>
-                                    <th>Description</th>
-                                    <th>Thumbnail</th>
-                                    <th>Actions</th>
+                                    <th class="fw-bold">ID</th>
+                                    <th class="fw-bold">Name</th>
+                                    <th class="fw-bold">Slug</th>
+                                    <th class="fw-bold">Description</th>
+                                    <th class="fw-bold">Thumbnail</th>
+                                    <th class="fw-bold">Actions</th>
                                     <!--
                                     <th>Image</th>
                                     <th>Meta Title</th>
                                     <th>Meta Keyword</th>
                                     <th>Meta Description</th> -->
                                 </tr>
-                            </div>
+                            </thead>
 
-                            <div class="tbody">
+                            <tbody>
                                 @foreach ($categories as $category)
                                     <tr>
                                         <td>{{$loop->iteration}}</td>
@@ -37,17 +38,18 @@
                                         <td>{{$category->description}}</td>
                                         <td><img src="{{ asset('/uploades/category/'.$category->image) }}" alt="category image" style="height: 50px; width: 50px; object-fit: contain; border-radius: 0;"></td>
                                         <td>
-                                            <a href="{{ url ('admin/category/'.$category->id.'/edit')}}" class="btn btn-primary">Edit</a>
+                                            <a href="{{ url ('admin/category/'.$category->id.'/edit')}}" class="btn btn-info">Edit</a>
                                             <a href="#" wire:click="deleteCategory({{ $category->id }})" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-danger">Delete</a>  
                                         </td>
                                     </tr>
                                 @endforeach
-                            </div>
-                        </table> 
+                            </tbody>
+                        </table>
+                        </div>
+                        
                         {{$categories->links()}}
                     </div>
                 </div>
-
 
                     <!-- Delete Button Model  -->
                      
@@ -79,6 +81,13 @@
     <script>
         window.addEventListener('close-modal', event =>{
             $('#deleteModal').modal('hide');
+        });
+    </script>
+
+    <script>
+        $('#myTable').DataTable({
+        pageLength: 5,
+        lengthMenu: [5, 10, 25, 50, 100]
         });
     </script>
 @endpush

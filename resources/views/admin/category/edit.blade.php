@@ -1,12 +1,13 @@
-@extends('admin.dashboard')
+@extends('layouts.admin')
+@section('title', 'Edit Category')
 @section('content')
 
     <div class="row">
             <div class="col-md-12 grid-margin">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
-                        <h2> Edit Category</h2>
-                        <a href="{{ url('admin/category') }}" class="btn btn-primary"> Back</a>
+                        <h2 class="fw-semibold text-secondary"> Edit Category</h2>
+                        <a href="{{ url('admin/category') }}" class="btn btn-danger"> Back</a>
                     </div>
                     <div class="card-body">
                         <form action="{{ url('admin/category/'.$category->id) }}" method="post" enctype="multipart/form-data">
@@ -49,7 +50,7 @@
                                 
                                 <div class="col-md-12 mb-3 d-flex justify-content-end gap-3">
                                     <a href="{{ url('admin/category') }}" class="btn btn-secondary"> Cancel</a>
-                                    <button type="submit" class="btn btn-primary"> Update</button>
+                                    <button type="submit" class="btn btn-info"> Update</button>
                                 </div>
                             </div>
                         </form>

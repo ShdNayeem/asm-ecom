@@ -1,9 +1,10 @@
-<div>
-    <div class="py-3 py-md-5 bg-light">
-        <div class="container">
 
-        <h4>My Cart</h4>
-        <hr>
+    <div class="py-3 py-md-5">
+        <div class="container">
+            <div class="mt-3">
+                <h4 class="fw-bold text-primary">Your Shopping Cart</h4>
+            </div>
+            <hr>
     
             <div class="row">
                 <div class="col-md-12">
@@ -25,7 +26,7 @@
                                     <h4>Total</h4>
                                 </div>
                                 <div class="col-md-2">
-                                    <h4>Remove</h4>
+                                    <h4>Action</h4>
                                 </div>
                             </div>
                         </div>
@@ -39,11 +40,7 @@
                                     <a href="{{ url ('collections/'.$cartItem->product->category->slug.'/'.$cartItem->product->slug )}}">
                                         <label class="product-name">
 
-                                        @if ($cartItem->product->firstImage->image)
-                                            <img src="{{ asset($cartItem->product->firstImage->image) }}" style="width: 50px; height: 50px" alt="">
-                                        @else
-                                            <img src="" style="width: 50px; height: 50px" alt="">
-                                        @endif
+                                        <img src="{{ asset($cartItem->product->productImages[0]->image) }}" style="width: 50px; height: 50px" alt="">
                                             
                                             {{$cartItem->product->name}}
                                         </label>
@@ -58,16 +55,16 @@
                                     <div class="quantity">
                                         <div class="input-group">
                                             <button type="button" wire:loading.attr="disabled" wire:click="decrementQuantity( {{$cartItem->id}} )" class="btn btn1"><i class="fa fa-minus"></i></button>
-                                            <input type="text" value="{{ $quantities[$cartItem->id] ?? 1 }}" readonly class="input-quantity" />
+                                            <input type="text" value="{{ $cartItem->quantity }}" readonly class="input-quantity" />
                                             <button type="button" wire:click="incrementQuantity( {{$cartItem->id}} )" class="btn btn1"><i class="fa fa-plus"></i></button>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-1 my-auto">
-                                    <label class="price">${{$cartItem->product->offer_price * $quantities[$cartItem->id] ?? 1}} </label>
+                                    <label class="price">${{$cartItem->product->offer_price * $cartItem->quantity}} </label>
                                     @php
-                                        $totalPrice += $cartItem->product->offer_price * $quantities[$cartItem->id] ?? 1
+                                        $totalPrice += $cartItem->product->offer_price * $cartItem->quantity
                                     @endphp
                                 </div>
 
@@ -75,7 +72,7 @@
                                     <div class="remove">
                                         <button type="button" wire:loading.attr="disabled" wire:click="removeCartItem( {{$cartItem->id}} )" class="btn btn-danger btn-sm">
                                             <span wire:loading.remove wire:click="removeCartItem( {{$cartItem->id}} )">
-                                                <i class="fa fa-trash"></i> Remove
+                                                <i class="fa fa-trash me-1"></i> Remove
                                             </span>
                                             <span wire:loading wire:click="removeCartItem( {{$cartItem->id}} )">
                                                 <i class="fa fa-trash"></i> Removing
@@ -98,15 +95,16 @@
 
             <div class="row">
                 <div class="col-md-8 mt-4">
-                    <h5>Get the Best Deals & Offers <a href="{{url('/collections')}}">Shop now</a></h5>
+                    
                 </div>
                 <div class="col-md-4 mt-3">
                     <div class="shadow-sm bg-white p-3">
                         <h4>Total:
-                            <span> {{$totalPrice}} </span>
+                            <span> ${{$totalPrice}} </span>
                         </h4>
                         <hr>
                         <a href="{{url ('/checkout')}}" class="btn btn-warning w-100"> Checkout</a>
+                        <a href="{{url('/collections')}}" class="btn btn-primary w-100 mt-3">Continue Shopping</a>
                     </div>
                 </div>
             </div>
@@ -114,4 +112,4 @@
         </div>
 
     </div>
-</div>
+

@@ -25,11 +25,11 @@ class OfferFormRequest extends FormRequest
             'product_name' => [
                 'required',
                 'string',
-                'max:50'
+                'max:20'
             ],
             'description' => [
                 'required',
-                'max:250'
+                'max:50'
             ],
         ];
     }

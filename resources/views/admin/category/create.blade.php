@@ -1,17 +1,18 @@
-@extends('admin.dashboard')
+@extends('layouts.admin')
+@section('title', 'Create Category')
 @section('content')
     <div class="row">
             <div class="col-md-12 grid-margin">
                 <div>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a class="text-decoration-none text-dark" href="/admin/category"> <strong>Category</strong></a></li>
+                        <li class="breadcrumb-item"><a class="text-decoration-none text-dark" href="/admin/category"> <strong> Category</strong></a></li>
                         <li class="breadcrumb-item active"> Add Category </li>
                     </ul>
                 </div>
                 <div class="card">
                     <div class="card-header d-flex justify-content-between p-3">
-                        <a href="/admin/category" class="text-decoration-none text-dark"> <h2>Add Category</h2> </a>
-                        <a href="{{url('admin/category')}}" class="btn btn-primary"> Back</a>
+                        <h2 class="fw-semibold text-secondary">Add Category</h2>
+                        <a href="{{url('admin/category')}}" class="btn btn-danger"> Back</a>
                     </div>
                     <div class="card-body">
                         <form action="{{url('admin/category')}}" method="post" enctype="multipart/form-data">
@@ -50,7 +51,7 @@
                                 </div>
                             
                                 <div class="col-md-12 mb-3">
-                                    <button type="submit" class="btn btn-primary float-end"> Save</button>
+                                    <button type="submit" class="btn btn-info float-end"> Save</button>
                                 </div>
                             </div>
                         </form>

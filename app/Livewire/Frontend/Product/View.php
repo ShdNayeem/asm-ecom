@@ -3,11 +3,32 @@
 namespace App\Livewire\Frontend\Product;
 
 use App\Models\Cart;
+use App\Models\Product;
 use App\Models\Wishlist;
+use Dom\Document;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+
 class View extends Component
 {
+
+    public function updateQuantityOnCartChange()
+    {
+        $productId = $this->product->id;
+
+        if (auth()->check()) {
+            $cartItem = Cart::where('user_id', auth()->id())->where('product_id', $productId)->first();
+
+            if ($cartItem) {
+                $this->quantityCount = $cartItem->quantity;
+            }
+        } else {
+            $cart = session()->get('cart', []);
+            if (isset($cart[$productId])) {
+                $this->quantityCount = $cart[$productId]['quantity'];
+            }
+        }
+    }
 
     public function addToWishList($productId){
         sleep(1);
@@ -47,10 +68,33 @@ class View extends Component
     }
 
     public $category, $product, $quantityCount = 1;
+    public $cartProductIds = [];
 
     public function mount($category, $product){
         $this->category = $category;
         $this->category = $product;
+
+        $productId = $product->id;
+
+    if (auth()->check()) {
+        $cartItem = Cart::where('user_id', auth()->id())->where('product_id', $productId)->first();
+        if ($cartItem) {
+            $this->quantityCount = $cartItem->quantity;
+        }
+    } else {
+        $cart = session()->get('cart', []);
+        if (isset($cart[$productId])) {
+            $this->quantityCount = $cart[$productId]['quantity'];
+        }
+    }
+
+    // Added button --- disable added & (- , +)
+    if (auth()->check()) {
+        $this->cartProductIds = Cart::where('user_id', auth()->id())->pluck('product_id')->toArray();
+    } else {
+        $sessionCart = session()->get('cart', []);
+        $this->cartProductIds = array_keys($sessionCart);
+    }
     }
 
     public function incrementQuantity(){
@@ -67,20 +111,23 @@ class View extends Component
         
     }
 
+   
     public function addToCart(int $productId){
+        
         if(Auth::check()){
             if(Cart::where('user_id', auth()->user()->id)->where('product_id', $productId)->exists()){
-                $this->dispatch('message',
-                text : 'Product Already Added to Cart',
-                type : 'warning',
-                status : 200
-            );
+            //     $this->dispatch('message',
+            //     text : 'Product Already Added to Cart',
+            //     type : 'warning',
+            //     status : 200
+            // );
             }
             else{
                 if($this->product->where('id', $productId)->exists()){
                 Cart::create([
                     'user_id' => auth()->user()->id,
-                    'product_id' => $productId
+                    'product_id' => $productId,
+                    'quantity' => $this->quantityCount
                 ]);
                 $this->dispatch('CartUpdated');
                 $this->dispatch('message',
@@ -97,14 +144,61 @@ class View extends Component
             );
             }
             }
-            
+            if (!in_array($productId, $this->cartProductIds)) {
+            $this->cartProductIds[] = $productId;
+            }
         }
         else{
+            // $this->dispatch('message',
+            //     text : 'Please Login to add to Cart!',
+            //     type : 'info',
+            //     status : 401
+            // );
+            
+            $quantity = 1;
+            $product = Product::findOrFail($productId);
+            $cart = session()->get('cart', []);
+
+           if(isset($cart[$productId])) {
+            
+            // $this->dispatch('message',
+            //     text: 'Product Already Added to Cart',
+            //     type: 'warning',
+            //     status: 200
+            //     );
+            }
+            else{
+                $cart[$productId] = [
+                    'name' => $product->name,
+                    'quantity' => $this->quantityCount,
+                    'price' => $product->offer_price,
+                    'image' => asset($product->productImages[0]->image),
+                    'slug' => $product->slug,
+                    'category_slug' => $product->category->slug,
+            ];
+            session()->put('cart', $cart);
+
+            $this->dispatch('CartUpdated');
             $this->dispatch('message',
-                text : 'Please Login to add to Cart!',
-                type : 'info',
-                status : 401
+                text: 'Product Added to Cart',
+                type: 'success',
+                status: 200
             );
+            }
+        }
+        if (!in_array($productId, $this->cartProductIds)) {
+            $this->cartProductIds[] = $productId;
+            }
+    }
+
+    protected $listeners = [
+    'ProductQuantityUpdated' => 'syncQuantityFromSidebar',
+    ];
+
+    public function syncQuantityFromSidebar($productId, $quantity)
+    {
+        if ($this->product->id == $productId) {
+            $this->quantityCount = $quantity;
         }
     }
 
